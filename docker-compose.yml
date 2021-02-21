@@ -1,0 +1,23 @@
+version: '3.8'
+volumes:
+  php-fpm-socket:
+  db:
+services:
+  web:
+    build: ./docker/nginx
+    ports:
+      - 80:80
+    volumes:
+      - php-fpm-socket:/var/run/php-fpm
+      - ./work:/work
+
+  app:
+    build: ./docker/php
+    volumes:
+      - php-fpm-socket:/var/run/php-fpm
+      - ./work:/work
+
+  db:
+    build: ./docker/mysql
+    volumes:
+      - db:/var/lib/mysql
